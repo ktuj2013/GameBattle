@@ -69,6 +69,7 @@ public class Main {
         }
 
         //Hero[] heroes = battle1.coin(firstHero, secondHero);
+        battle1.printState(firstHero, "First", secondHero);
         battle1.battle(firstHero, secondHero);
     }
 
@@ -89,20 +90,17 @@ public class Main {
     }
 
     public static Hero chooseHero() {
-        int number;
-        while(true) {
             try {
-                number = Integer.parseInt(input("Выбери героя цифрой!"));
+                int number = Integer.parseInt(input("Выбери героя цифрой!"));
                 if (number < 1 || number > Players.values().length) {
                     System.out.println("Invalid input! Try again!");
-                } else {
-                    break;
+                    return chooseHero();
                 }
+                return createPlayer(Players.values()[number - 1]);
             } catch (NumberFormatException e) {
                 System.out.println("Это не цифра!");
+                return chooseHero();
             }
-        }
-        return createPlayer(Players.values()[number - 1]);
     }
 
     public static Hero randomHero() {

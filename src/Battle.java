@@ -128,15 +128,15 @@ public class Battle {
                 if (!heroes[i].getIsGamerPlay()) {
                     versusBot(hero1, heroes[i], random);
                 } else {
-                    printState(heroes[i], str);
+                    printState(heroes[0], str, heroes[1]);
                     if (str.equals("First")) {
-                        System.out.println("Ходит первый игрок, " + heroes[i].getName() + "!");
+                        System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
                     } else {
-                        System.out.println("Ходит второй игрок, " + heroes[i].getName() + "!");
+                        System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
                     }
                     System.out.println(str + " hero turn. 1 - attack, 2 - ability, 3 - defense.");
                     int change = input();
-                    if (!hero2.getIsGamerPlay() || str.equals("First")) {
+                    if (str.equals("First")) {
                         turn(hero1, hero2, change);
                     } else {
                         turn(hero2, hero1, change);
@@ -149,7 +149,7 @@ public class Battle {
 
 
         public void turn (Hero hero1, Hero hero2, int input) {
-            double hp = hero1.getHpLevel();
+            double hp = hero2.getHpLevel();
             if (input == 2) {
                 if (hero1.getStaminaLevel() >= 3) {
                     hero2.setHpLevel(hero2.getHpLevel() - hero1.ability(hero2));
@@ -195,12 +195,13 @@ public class Battle {
 
         }
 
-        public void printState(Hero hero, String title) {
+        public void printState(Hero hero, String title, Hero hero2) {
+
             System.out.println("=====" + title + "=====");
-            System.out.println("hp = " + hero.getHpLevel());
-            System.out.println("armor = " + hero.getArmorLevel());
-            System.out.println("stamina = " + hero.getStaminaLevel());
-            System.out.println("damage = " + hero.getDamage());
+            System.out.println("hp = " + hero.getHpLevel() + "\t\t|\t\t" + hero2.getHpLevel());
+            System.out.println("armor = " + hero.getArmorLevel() + "\t\t|\t\t" + hero2.getArmorLevel());
+            System.out.println("stamina = " + hero.getStaminaLevel() + "\t\t|\t\t" + hero2.getStaminaLevel());
+            System.out.println("damage = " + hero.getDamage() + "\t\t|\t\t" + hero2.getDamage());
             System.out.println("=====================================");
             System.out.println();
         }
