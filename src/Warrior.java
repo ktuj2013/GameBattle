@@ -17,7 +17,7 @@ public class Warrior extends Hero {
 
     @Override
     public double ability(Hero hero) {
-        setArmor(getArmorLevel() - (getDamage() - 10));
+        setArmor(getArmorLevel() - getDamage() - 10);
         if (getArmorLevel() - getDamage() > 0) {
             return getDamage() * 0.5;
         }
