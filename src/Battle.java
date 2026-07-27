@@ -63,7 +63,48 @@ public class Battle {
     }
 
 
-
+    public void versusBot(Hero hero1, Hero hero2, Random random) {
+        int input = random.nextInt(1, 4);
+        if (hero2.getArmorLevel() == 0 && input == 2) {
+            input = 3;
+        }
+        if (input == 1) {
+            if (hero2.getStaminaLevel() < 2) {
+                hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
+            } else {
+                hero1.setHpLevel(hero1.getHpLevel() - hero2.attack(hero1));
+                double dmg = hero2.attack(hero1);
+                updateArmorLevel(hero1);
+                hero2.setStaminaLevel(hero2.getStaminaLevel() - 2);
+                System.out.println(hero2.getName() + " атакует!" + " и наносит" + dmg
+                        + " урона, оставляя тебе " + hero1.getHpLevel() + " здоровья и "
+                        + hero1.getArmorLevel() + " брони!");
+            }
+        } else if (input == 2) {
+            if (hero2.getStaminaLevel() < 3) {
+                hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
+            } else {
+                hero1.setHpLevel(hero1.getHpLevel() - hero2.ability(hero1));
+                double dmg = hero2.ability(hero1);
+                updateArmorLevel(hero1);
+                hero2.setStaminaLevel(hero2.getStaminaLevel() - 3);
+                System.out.println(hero2.getName() + " использует свою способность, нанося " + dmg
+                        + "урона, оставляя тебе " + hero1.getHpLevel() + " здоровья и "
+                        + hero1.getArmorLevel() + " брони!");
+                if (hero2.getName().equals("Priest")) {
+                    double heal = hero2.getDamage() * 0.25;
+                    System.out.println("Восстанавливает здоровье на " + heal);
+                }
+            }
+        } else if (input == 3) {
+            if (hero2.getStaminaLevel() < 1) {
+                hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
+            } else {
+                hero2.passive();
+                System.out.println(hero2.getName() + " защищается!");
+            }
+        }
+    }
 
     public void battle(Hero hero1, Hero hero2) {
         Hero[] heroes = coin(hero1, hero2);
@@ -85,52 +126,13 @@ public class Battle {
                 }
 
                 if (!heroes[i].getIsGamerPlay()) {
-                    int input = random.nextInt(1, 4);
-                    if (heroes[i].getArmorLevel() == 0 && input == 2) {
-                        input = 3;
-                    }
-                    if (input == 1) {
-                        if (hero2.getStaminaLevel() < 2) {
-                            hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
-                        } else {
-                            hero1.setHpLevel(hero1.getHpLevel() - hero2.attack(hero1));
-                            double dmg = hero2.attack(hero1);
-                            updateArmorLevel(hero1);
-                            hero2.setStaminaLevel(hero2.getStaminaLevel() - 2);
-                            System.out.println(heroes[i].getName() + " атакует!" + " и наносит" + dmg
-                                    + " урона, оставляя тебе " + hero1.getHpLevel() + " здоровья и "
-                                    + hero1.getArmorLevel() + " брони!");
-                        }
-                    } else if (input == 2) {
-                        if (hero2.getStaminaLevel() < 3) {
-                            hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
-                        } else {
-                            hero1.setHpLevel(hero1.getHpLevel() - hero2.ability(hero1));
-                            double dmg = hero2.ability(hero1);
-                            updateArmorLevel(hero1);
-                            hero2.setStaminaLevel(hero2.getStaminaLevel() - 3);
-                            System.out.println(heroes[i].getName() + " использует свою способность, нанося " + dmg
-                                    + "урона, оставляя тебе " + hero1.getHpLevel() + " здоровья и "
-                                    + hero1.getArmorLevel() + " брони!");
-                            if (hero2.getName().equals("Priest")) {
-                                double heal = hero2.getDamage() * 0.25;
-                                System.out.println("Восстанавливает здоровье на " + heal);
-                            }
-                        }
-                    } else if (input == 3) {
-                        if (hero2.getStaminaLevel() < 1) {
-                            hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
-                        } else {
-                            hero2.passive();
-                            System.out.println(heroes[i].getName() + " защищается!");
-                        }
-                    }
+                    versusBot(hero1, heroes[i], random);
                 } else {
                     printState(heroes[i], str);
                     if (str.equals("First")) {
-                        System.out.println("Ходит первый герой!");
+                        System.out.println("Ходит первый игрок, " + heroes[i].getName() + "!");
                     } else {
-                        System.out.println("Ходит второй герой!");
+                        System.out.println("Ходит второй игрок, " + heroes[i].getName() + "!");
                     }
                     System.out.println(str + " hero turn. 1 - attack, 2 - ability, 3 - defense.");
                     int change = input();
@@ -147,12 +149,14 @@ public class Battle {
 
 
         public void turn (Hero hero1, Hero hero2, int input) {
+            double hp = hero1.getHpLevel();
             if (input == 2) {
                 if (hero1.getStaminaLevel() >= 3) {
                     hero2.setHpLevel(hero2.getHpLevel() - hero1.ability(hero2));
                     updateArmorLevel(hero2);
                     hero1.setStaminaLevel(hero1.getStaminaLevel() - 3);
-                    System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() +
+                    System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() + "(-"
+                            + (hp - hero2.getHpLevel()) + ")" +
                             " ,а броня до " + hero2.getArmorLevel());
                 } else if (hero1.getStaminaLevel() < 3) {
                     if (outOfStamina(hero1).equals("n") || hero1.getStaminaLevel() == 0) {
@@ -168,7 +172,8 @@ public class Battle {
                     hero2.setHpLevel(hero2.getHpLevel() - hero1.attack(hero2));
                     updateArmorLevel(hero2);
                     hero1.setStaminaLevel(hero1.getStaminaLevel() - 2);
-                    System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() +
+                    System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() + "(-"
+                                    + (hp - hero2.getHpLevel()) + ")" +
                             " ,а броня до " + hero2.getArmorLevel());
                 } else if (hero1.getStaminaLevel() < 2) {
                     if (outOfStamina(hero1).equals("n") || hero1.getStaminaLevel() == 0) {

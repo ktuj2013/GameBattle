@@ -25,7 +25,7 @@ public class Main {
         for (int i = 0; i < Players.values().length; i++) {
             System.out.println((i + 1) + ")" + Players.values()[i]);
         }
-        System.out.println("Welcome to the game of battle, Player 1! Choose your hero!");
+        System.out.println("Welcome to the game of battle, Player 1!");
         Hero firstHero = chooseHero();
         String pvpOrPve;
         while (true) {
@@ -64,7 +64,7 @@ public class Main {
             for (int i = 0; i < Players.values().length; i++) {
                 System.out.println((i + 1) + ")" + Players.values()[i]);
             }
-            System.out.println("Welcome to the game of battle, Player 2! Choose your hero!");
+            System.out.println("Welcome to the game of battle, Player 2!");
             secondHero = chooseHero();
         }
 
@@ -89,19 +89,26 @@ public class Main {
     }
 
     public static Hero chooseHero() {
-        Scanner scanner = new Scanner(System.in);
-        int numberHero = scanner.nextInt();
-        while (numberHero < 1 || numberHero > Players.values().length) {
-            System.out.println("Такого героя нет, попробуй снова!");
-            numberHero = scanner.nextInt();
+        int number;
+        while(true) {
+            try {
+                number = Integer.parseInt(input("Выбери героя цифрой!"));
+                if (number < 1 || number > Players.values().length) {
+                    System.out.println("Invalid input! Try again!");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Это не цифра!");
+            }
         }
-        return createPlayer(Players.values()[numberHero - 1]);
+        return createPlayer(Players.values()[number - 1]);
     }
 
     public static Hero randomHero() {
         Random random = new Random();
         int index = random.nextInt(Players.values().length);
-        return createPlayer(Players.values()[index - 1]);
+        return createPlayer(Players.values()[index]);
     }
 
     public static String input(String label) {
