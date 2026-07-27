@@ -184,6 +184,7 @@ public class Battle {
                         turn(hero1, hero2, input);
                     }
                 }
+
             } else if (input == 3) {
                 if (hero1.getStaminaLevel() >= 1) {
                     hero1.passive();
