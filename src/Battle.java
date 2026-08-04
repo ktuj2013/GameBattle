@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 
+
 public class Battle {
     public Hero[] coin(Hero hero1, Hero hero2) {
         Random random = new Random();
