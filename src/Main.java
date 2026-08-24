@@ -8,17 +8,6 @@ public class Main {
     public static void main(String[] args) {
 
         Battle battle1 = new Battle();
-        /*Hero[] player1 = {new Mage("Mage", 70.0, 12, 25.0, 14.0, true),
-                new Rogue("Rogue", 80.0, 14, 30.0, 15.0, true),
-                new Priest("Priest", 90.0, 12, 35.0, 12.0, true),
-                new Warrior("Warrior", 100.0, 16, 40.0, 16.0, true)
-        };
-
-        Hero[] player2 = {new Mage("Mage", 70.0, 12, 25.0, 14.0, true),
-                new Rogue("Rogue", 80.0, 14, 30.0, 15.0, true),
-                new Priest("Priest", 90.0, 12, 35.0, 12.0, true),
-                new Warrior("Warrior", 100.0, 16, 40.0, 16.0, true)
-        };*/
 
 
 
@@ -69,7 +58,7 @@ public class Main {
         }
 
         //Hero[] heroes = battle1.coin(firstHero, secondHero);
-        battle1.printState(firstHero, "First", secondHero);
+
         battle1.battle(firstHero, secondHero);
     }
 

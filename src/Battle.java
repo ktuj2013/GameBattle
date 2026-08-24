@@ -3,8 +3,6 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-
-
 public class Battle {
     public Hero[] coin(Hero hero1, Hero hero2) {
         Random random = new Random();
@@ -16,7 +14,7 @@ public class Battle {
         }
     }
 
-    public int input() {
+    public Turns input() {
         int input;
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -29,7 +27,12 @@ public class Battle {
                 System.out.println("Invalid input. Try again.");
             }
         }
-        return input;
+        return switch (input) {
+            case 1 -> Turns.attack;
+            case 2 -> Turns.ability;
+            case 3 -> Turns.passive;
+            default -> null;
+        };
     }
 
 
@@ -64,7 +67,8 @@ public class Battle {
     }
 
 
-    public void versusBot(Hero hero1, Hero hero2, Random random) {
+    public void versusBot(Hero hero1, Hero hero2) {
+        Random random = new Random();
         int input = random.nextInt(1, 4);
         if (hero2.getArmorLevel() == 0 && input == 2) {
             input = 3;
@@ -109,8 +113,7 @@ public class Battle {
 
     public void battle(Hero hero1, Hero hero2) {
         Hero[] heroes = coin(hero1, hero2);
-        Random random = new Random();
-        String str = "";
+        boolean stat = false;
         while (true) {
             if (heroes[0].getHpLevel() <= 0) {
                 System.out.println("Second player wins. Game over.");
@@ -119,39 +122,40 @@ public class Battle {
                 System.out.println("First player wins. Game over.");
                 break;
             }
-            for (int i = 0; i < heroes.length; i++) {
-                if (i == 0) {
-                    str = "First";
-                } else if (i == 1) {
-                    str = "Second";
-                }
-
-                if (!heroes[i].getIsGamerPlay()) {
-                    versusBot(hero1, heroes[i], random);
-                } else {
-                    printState(heroes[0], str, heroes[1]);
-                    if (str.equals("First")) {
-                        System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
-                    } else {
-                        System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
-                    }
-                    System.out.println(str + " hero turn. 1 - attack, 2 - ability, 3 - defense.");
-                    int change = input();
-                    if (str.equals("First")) {
-                        turn(hero1, hero2, change);
-                    } else {
-                        turn(hero2, hero1, change);
-                    }
-                }
+            System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
+            System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
+            turn(heroes[0], heroes[1], stat);
+            System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
+            if (!heroes[1].getIsGamerPlay()) {
+                versusBot(hero1, hero2);
+            } else {
+                System.out.println("Second turn. 1 - attack, 2 - ability, 3 - defense.");
+                stat = true;
+                turn(heroes[1], heroes[0], stat);
             }
         }
     }
 
 
+        public void turn(Hero hero1, Hero hero2, boolean stat) {
+            double hp1;
+            double hp2;
+            if (stat) {
+                hp1 = hero2.getHpLevel();
+                hp2 = hero1.getHpLevel();
+            } else {
+                hp1 = hero1.getHpLevel();
+                hp2 = hero2.getHpLevel();
+            }
+            Turns turn = input();
+            attack(hero1, hero2, turn);
+            printState(hero1, hero2, hp1, hp2);
+        }
 
-        public void turn (Hero hero1, Hero hero2, int input) {
-            double hp = hero2.getHpLevel();
-            if (input == 2) {
+
+        public void attack (Hero hero1, Hero hero2, Turns turn) {
+            double hp = hpStatistic(hero2);
+            if (turn == Turns.ability) {
                 if (hero1.getStaminaLevel() >= 3) {
                     hero2.setHpLevel(hero2.getHpLevel() - hero1.ability(hero2));
                     updateArmorLevel(hero2);
@@ -160,15 +164,15 @@ public class Battle {
                             + (hp - hero2.getHpLevel()) + ")" +
                             " ,а броня до " + hero2.getArmorLevel());
                 } else if (hero1.getStaminaLevel() < 3) {
-                    if (outOfStamina(hero1).equals("n") || hero1.getStaminaLevel() == 0) {
+                    if (hero1.getStaminaLevel() == 0) {
                         hero1.setStaminaLevel(hero1.getStaminaLevel() + 1);
                     } else if (outOfStamina(hero1).equals("m")) {
                         System.out.println("Your move?");
-                        input = input();
-                        turn(hero1, hero2, input);
+                        turn = input();
+                        attack(hero1, hero2, turn);
                     }
                 }
-            } else if (input == 1) {
+            } else if (turn == Turns.attack) {
                 if (hero1.getStaminaLevel() >= 2) {
                     hero2.setHpLevel(hero2.getHpLevel() - hero1.attack(hero2));
                     updateArmorLevel(hero2);
@@ -177,16 +181,16 @@ public class Battle {
                                     + (hp - hero2.getHpLevel()) + ")" +
                             " ,а броня до " + hero2.getArmorLevel());
                 } else if (hero1.getStaminaLevel() < 2) {
-                    if (outOfStamina(hero1).equals("n") || hero1.getStaminaLevel() == 0) {
+                    if (hero1.getStaminaLevel() == 0) {
                         hero1.setStaminaLevel(hero1.getStaminaLevel() + 1);
                     } else if (outOfStamina(hero1).equals("m")) {
                         System.out.println("Your move?");
-                        input = input();
-                        turn(hero1, hero2, input);
+                        turn = input();
+                        attack(hero1, hero2, turn);
                     }
                 }
 
-            } else if (input == 3) {
+            } else if (turn == Turns.passive) {
                 if (hero1.getStaminaLevel() >= 1) {
                     hero1.passive();
                     System.out.println("Ваш уровень брони теперь равен " + hero1.getArmorLevel());
@@ -197,13 +201,21 @@ public class Battle {
 
         }
 
-        public void printState(Hero hero, String title, Hero hero2) {
+        public double hpStatistic(Hero hero) {
+            return hero.getHpLevel();
+        }
 
-            System.out.println("=====" + title + "=====");
-            System.out.println("hp = " + hero.getHpLevel() + "\t\t|\t\t" + hero2.getHpLevel());
-            System.out.println("armor = " + hero.getArmorLevel() + "\t\t|\t\t" + hero2.getArmorLevel());
-            System.out.println("stamina = " + hero.getStaminaLevel() + "\t\t|\t\t" + hero2.getStaminaLevel());
-            System.out.println("damage = " + hero.getDamage() + "\t\t|\t\t" + hero2.getDamage());
+        public void printState(Hero hero, Hero hero2, double hp1, double hp2) {
+            System.out.println("hp = " + hero.getHpLevel() + "\t\t\t|\t\t\t" + hero2.getHpLevel());
+            if (hp1 > hero.getHpLevel()) {
+                System.out.println("Здоровье первого героя уменьшилось на " + (hp1 - hero.getHpLevel()));
+            }
+            if (hp2 > hero2.getHpLevel()) {
+                System.out.println("Здоровье второго героя уменьшилось на " + (hp2 - hero2.getHpLevel()));
+            }
+            System.out.println("armor = " + hero.getArmorLevel() + "\t\t\t|\t\t\t" + hero2.getArmorLevel());
+            System.out.println("stamina = " + hero.getStaminaLevel() + "\t\t\t|\t\t\t" + hero2.getStaminaLevel());
+            System.out.println("damage = " + hero.getDamage() + "\t\t\t|\t\t\t" + hero2.getDamage());
             System.out.println("=====================================");
             System.out.println();
         }
