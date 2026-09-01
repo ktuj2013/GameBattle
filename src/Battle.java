@@ -121,21 +121,21 @@ public class Battle {
                 System.out.println("First player wins. Game over.");
                 break;
             }
-
-
-            if (!heroes[1].getIsGamerPlay()) {
-                System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
-                System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
-                turn(heroes[0], heroes[1], stat);
-                versusBot(hero1, hero2);
-            } else {
-                System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
-                System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
-                turn(heroes[0], heroes[1], stat);
-                System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
-                System.out.println("Second turn. 1 - attack, 2 - ability, 3 - defense.");
-                stat = true;
-                turn(heroes[1], heroes[0], stat);
+            for (int i = 0; i < heroes.length; i++) {
+                if (!heroes[i].getIsGamerPlay()) {
+                    versusBot(hero1, heroes[i]);
+                } else {
+                    if (i == 0 && heroes[0].getIsGamerPlay()) {
+                        System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
+                        System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
+                        turn(heroes[0], heroes[1], stat);
+                    } else if (i == 1 && heroes[1].getIsGamerPlay()) {
+                        System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
+                        System.out.println("Second turn. 1 - attack, 2 - ability, 3 - defense.");
+                        stat = true;
+                        turn(heroes[1], heroes[0], stat);
+                    }
+                }
             }
         }
     }

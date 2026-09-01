@@ -10,7 +10,7 @@ public class Mage extends Hero {
     @Override
     public void ability(Hero hero) {
         double fireball = getDamage() * 2;
-        if (hero.getArmorLevel() - fireball > 0) {
+        if (hero.getArmorLevel() - getDamage() > 0) {
             hero.setHpLevel(hero.getHpLevel() - getDamage());
         } else {
             hero.setHpLevel(hero.getHpLevel() - fireball);
