@@ -20,7 +20,7 @@ public class Battle {
             Scanner scanner = new Scanner(System.in);
             try {
                 input = scanner.nextInt();
-                if (input > 0 && input <= 3) {
+                if (input > 0 && input <= Turns.values().length) {
                     break;
                 }
             } catch (InputMismatchException e) {
@@ -73,12 +73,12 @@ public class Battle {
         if (hero2.getArmorLevel() == 0 && input == 2) {
             input = 3;
         }
+        double dmg = hero2.getDamage();
         if (input == 1) {
             if (hero2.getStaminaLevel() < 2) {
                 hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
             } else {
                 hero1.setHpLevel(hero1.getHpLevel() - hero2.attack(hero1));
-                double dmg = hero2.attack(hero1);
                 updateArmorLevel(hero1);
                 hero2.setStaminaLevel(hero2.getStaminaLevel() - 2);
                 System.out.println(hero2.getName() + " атакует!" + " и наносит" + dmg
@@ -89,8 +89,7 @@ public class Battle {
             if (hero2.getStaminaLevel() < 3) {
                 hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
             } else {
-                hero1.setHpLevel(hero1.getHpLevel() - hero2.ability(hero1));
-                double dmg = hero2.ability(hero1);
+                hero2.ability(hero1);
                 updateArmorLevel(hero1);
                 hero2.setStaminaLevel(hero2.getStaminaLevel() - 3);
                 System.out.println(hero2.getName() + " использует свою способность, нанося " + dmg
@@ -105,7 +104,7 @@ public class Battle {
             if (hero2.getStaminaLevel() < 1) {
                 hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
             } else {
-                hero2.passive();
+                applyPassive(hero2);
                 System.out.println(hero2.getName() + " защищается!");
             }
         }
@@ -157,7 +156,7 @@ public class Battle {
             double hp = hpStatistic(hero2);
             if (turn == Turns.ability) {
                 if (hero1.getStaminaLevel() >= 3) {
-                    hero2.setHpLevel(hero2.getHpLevel() - hero1.ability(hero2));
+                    hero1.ability(hero2);
                     updateArmorLevel(hero2);
                     hero1.setStaminaLevel(hero1.getStaminaLevel() - 3);
                     System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() + "(-"
@@ -192,13 +191,12 @@ public class Battle {
 
             } else if (turn == Turns.passive) {
                 if (hero1.getStaminaLevel() >= 1) {
-                    hero1.passive();
+                    applyPassive(hero1);
                     System.out.println("Ваш уровень брони теперь равен " + hero1.getArmorLevel());
                 } else if (hero1.getStaminaLevel() < 1) {
                     hero1.setStaminaLevel(hero1.getStaminaLevel() + 1);
                 }
             }
-
         }
 
         public double hpStatistic(Hero hero) {
@@ -219,6 +217,33 @@ public class Battle {
             System.out.println("=====================================");
             System.out.println();
         }
+
+    public void applyPassive(Hero hero){
+        int input;
+        if (!hero.getIsGamerPlay()) {
+            Random inp = new Random();
+            if (hero.getStaminaLevel() == 1) {
+                input = 1;
+            } else {
+                input = inp.nextInt(1, hero.getStaminaLevel());
+            }
+        } else {
+            System.out.println("Сколько стамины вы готовы потратить на защиту?");
+            while (true) {
+                Scanner sc = new Scanner(System.in);
+                try {
+                    input = sc.nextInt();
+                    if (input <= hero.getStaminaLevel() && input > 0) {
+                        break;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Нет такого количества стамины.");
+                }
+            }
+        }
+        hero.setPassiveStamina(input);
+        hero.passive();
+    }
 }
 
 

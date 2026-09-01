@@ -1,10 +1,16 @@
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
 public abstract class Hero implements Damageable{
     private String name;
     private double hp;
     private int stamina;
+    public int passiveStamina = 0;          //пассивка на стамину
     private double armor;
     private double damage;
     private boolean isGamerPlay;
+
 
     public Hero(String name, double hp, int stamina, double armor, double damage, boolean isGamerPlay) {
         this.name = name;
@@ -13,6 +19,14 @@ public abstract class Hero implements Damageable{
         this.armor = armor;
         this.damage = damage;
         this.isGamerPlay = isGamerPlay;
+    }
+
+    public void setPassiveStamina(int stamina) {
+        this.passiveStamina = stamina;
+    }
+
+    public int getPassiveStamina() {
+        return passiveStamina;
     }
 
     public void setIsGamerPlay(boolean isGamerPlay) {
@@ -59,6 +73,13 @@ public abstract class Hero implements Damageable{
         return armor;
     }
 
+    public double attack(Hero hero) {
+        if (getArmorLevel() - getDamage() > 0) {
+            return getDamage() * 0.5;
+        }
+        return getDamage();
+    }
+
     @Override
     public String toString() {
         return "Hero{" +
@@ -69,4 +90,6 @@ public abstract class Hero implements Damageable{
                 ", damage=" + damage +
                 '}';
     }
+
+
 }
