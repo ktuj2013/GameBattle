@@ -121,13 +121,18 @@ public class Battle {
                 System.out.println("First player wins. Game over.");
                 break;
             }
-            System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
-            System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
-            turn(heroes[0], heroes[1], stat);
-            System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
+
+
             if (!heroes[1].getIsGamerPlay()) {
+                System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
+                System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
+                turn(heroes[0], heroes[1], stat);
                 versusBot(hero1, hero2);
             } else {
+                System.out.println("Ходит первый игрок, " + heroes[0].getName() + "!");
+                System.out.println("First hero turn. 1 - attack, 2 - ability, 3 - defense.");
+                turn(heroes[0], heroes[1], stat);
+                System.out.println("Ходит второй игрок, " + heroes[1].getName() + "!");
                 System.out.println("Second turn. 1 - attack, 2 - ability, 3 - defense.");
                 stat = true;
                 turn(heroes[1], heroes[0], stat);

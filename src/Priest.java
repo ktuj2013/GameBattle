@@ -15,8 +15,8 @@ public class Priest extends Hero {
             hero.setHpLevel(hero.getHpLevel() - getDamage() * 0.5);
         } else {
             setHpLevel(getHpLevel() + (getDamage() * 0.5));
+            hero.setHpLevel(hero.getHpLevel() - getDamage());
         }
-        hero.setHpLevel(hero.getHpLevel() - getDamage());
         setStaminaLevel(getStaminaLevel() - 3);
     }
 
