@@ -14,6 +14,7 @@ public class Mage extends Hero {
             hero.setHpLevel(hero.getHpLevel() - getDamage());
         }
         hero.setHpLevel(hero.getHpLevel() - fireball);
+        setStaminaLevel(getStaminaLevel() - 3);
     }
 
     @Override

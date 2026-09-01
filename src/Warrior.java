@@ -9,11 +9,12 @@ public class Warrior extends Hero {
 
     @Override
     public void ability(Hero hero) {
-        hero.setArmor(hero.getArmorLevel() - getDamage() - 10);
+        hero.setArmor(hero.getArmorLevel() - 10);
         if (getArmorLevel() - getDamage() > 0) {
             setHpLevel(hero.getHpLevel() - (getDamage() * 0.5));
         }
         hero.setHpLevel(hero.getHpLevel() - getDamage());
+        setStaminaLevel(getStaminaLevel() - 3);
     }
 
     @Override

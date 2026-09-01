@@ -11,6 +11,7 @@ public class Rogue extends Hero {
     @Override
     public void ability(Hero hero) {
         hero.setHpLevel(hero.getHpLevel() - getDamage());
+        setStaminaLevel(getStaminaLevel() - 3);
     }
 
     @Override

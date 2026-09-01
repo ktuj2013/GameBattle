@@ -78,9 +78,8 @@ public class Battle {
             if (hero2.getStaminaLevel() < 2) {
                 hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
             } else {
-                hero1.setHpLevel(hero1.getHpLevel() - hero2.attack(hero1));
+                hero2.attack(hero1);
                 updateArmorLevel(hero1);
-                hero2.setStaminaLevel(hero2.getStaminaLevel() - 2);
                 System.out.println(hero2.getName() + " атакует!" + " и наносит" + dmg
                         + " урона, оставляя тебе " + hero1.getHpLevel() + " здоровья и "
                         + hero1.getArmorLevel() + " брони!");
@@ -89,9 +88,10 @@ public class Battle {
             if (hero2.getStaminaLevel() < 3) {
                 hero2.setStaminaLevel(hero2.getStaminaLevel() + 1);
             } else {
+                double hp = hero1.getHpLevel();
                 hero2.ability(hero1);
+                dmg = hp - hero1.getHpLevel();
                 updateArmorLevel(hero1);
-                hero2.setStaminaLevel(hero2.getStaminaLevel() - 3);
                 System.out.println(hero2.getName() + " использует свою способность, нанося " + dmg
                         + "урона, оставляя тебе " + hero1.getHpLevel() + " здоровья и "
                         + hero1.getArmorLevel() + " брони!");
@@ -158,7 +158,6 @@ public class Battle {
                 if (hero1.getStaminaLevel() >= 3) {
                     hero1.ability(hero2);
                     updateArmorLevel(hero2);
-                    hero1.setStaminaLevel(hero1.getStaminaLevel() - 3);
                     System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() + "(-"
                             + (hp - hero2.getHpLevel()) + ")" +
                             " ,а броня до " + hero2.getArmorLevel());
@@ -173,9 +172,8 @@ public class Battle {
                 }
             } else if (turn == Turns.attack) {
                 if (hero1.getStaminaLevel() >= 2) {
-                    hero2.setHpLevel(hero2.getHpLevel() - hero1.attack(hero2));
+                    hero1.attack(hero2);
                     updateArmorLevel(hero2);
-                    hero1.setStaminaLevel(hero1.getStaminaLevel() - 2);
                     System.out.println("У противника здоровье опустилось до " + hero2.getHpLevel() + "(-"
                                     + (hp - hero2.getHpLevel()) + ")" +
                             " ,а броня до " + hero2.getArmorLevel());
