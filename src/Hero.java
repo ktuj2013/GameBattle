@@ -76,8 +76,9 @@ public abstract class Hero implements Damageable{
     public void attack(Hero hero) {
         if (hero.getArmorLevel() - getDamage() > 0) {
             hero.setHpLevel(hero.getHpLevel() - getDamage() * 0.5);
+        } else {
+            hero.setHpLevel(hero.getHpLevel() - getDamage());
         }
-        hero.setHpLevel(hero.getHpLevel() - getDamage());
         setStaminaLevel(getStaminaLevel() - 2);
     }
 

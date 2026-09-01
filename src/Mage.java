@@ -12,8 +12,9 @@ public class Mage extends Hero {
         double fireball = getDamage() * 2;
         if (hero.getArmorLevel() - fireball > 0) {
             hero.setHpLevel(hero.getHpLevel() - getDamage());
+        } else {
+            hero.setHpLevel(hero.getHpLevel() - fireball);
         }
-        hero.setHpLevel(hero.getHpLevel() - fireball);
         setStaminaLevel(getStaminaLevel() - 3);
     }
 

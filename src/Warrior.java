@@ -12,8 +12,9 @@ public class Warrior extends Hero {
         hero.setArmor(hero.getArmorLevel() - 10);
         if (getArmorLevel() - getDamage() > 0) {
             setHpLevel(hero.getHpLevel() - (getDamage() * 0.5));
+        } else {
+            hero.setHpLevel(hero.getHpLevel() - getDamage());
         }
-        hero.setHpLevel(hero.getHpLevel() - getDamage());
         setStaminaLevel(getStaminaLevel() - 3);
     }
 
