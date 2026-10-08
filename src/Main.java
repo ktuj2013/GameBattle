@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         Battle battle1 = new Battle();
-
+        battle1.dungeon(new Warrior("Warrior", 100.0, 16, 40.0, 16.0, true));
 
 
         for (int i = 0; i < Players.values().length; i++) {
@@ -16,6 +16,7 @@ public class Main {
         }
         System.out.println("Welcome to the game of battle, Player 1!");
         Hero firstHero = chooseHero();
+        System.out.println("Ты выбрал " + firstHero.getName() + " своим героем!");
         String pvpOrPve;
         while (true) {
             try {
@@ -47,7 +48,7 @@ public class Main {
 
             }
             secondHero = randomHero();
-            System.out.println(secondHero);
+            System.out.println("Твоим противником становится " + secondHero.getName() + "!");
             secondHero.setIsGamerPlay(false);
         } else {
             for (int i = 0; i < Players.values().length; i++) {
@@ -104,5 +105,6 @@ public class Main {
         String input = sc.nextLine();
         return input;
     }
+
 }
 

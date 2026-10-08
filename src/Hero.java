@@ -10,6 +10,7 @@ public abstract class Hero implements Damageable{
     private double armor;
     private double damage;
     private boolean isGamerPlay;
+    private Position position;
 
 
     public Hero(String name, double hp, int stamina, double armor, double damage, boolean isGamerPlay) {
@@ -19,6 +20,14 @@ public abstract class Hero implements Damageable{
         this.armor = armor;
         this.damage = damage;
         this.isGamerPlay = isGamerPlay;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public void setPassiveStamina(int stamina) {
@@ -81,6 +90,8 @@ public abstract class Hero implements Damageable{
         }
         setStaminaLevel(getStaminaLevel() - 2);
     }
+
+    public abstract boolean isCellVisible(Position position);
 
     @Override
     public String toString() {

@@ -8,6 +8,11 @@ public class Mage extends Hero {
     }
 
     @Override
+    public boolean isCellVisible(Position position) {
+        return false;
+    }
+
+    @Override
     public void ability(Hero hero) {
         double fireball = getDamage() * 2;
         if (hero.getArmorLevel() - getDamage() > 0) {
@@ -23,5 +28,6 @@ public class Mage extends Hero {
         setArmor(getArmorLevel() + 5 * getPassiveStamina());
         setStaminaLevel(getStaminaLevel() - getPassiveStamina());
     }
+
 
 }

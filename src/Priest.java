@@ -7,6 +7,11 @@ public class Priest extends Hero {
         super(name, hp, stamina, armor, damage, isGamerPlay);
     }
 
+    @Override
+    public boolean isCellVisible(Position position) {
+        return false;
+    }
+
 
     @Override
     public void ability(Hero hero) {

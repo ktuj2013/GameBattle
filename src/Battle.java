@@ -70,6 +70,7 @@ public class Battle {
     public void versusBot(Hero hero1, Hero hero2) {
         Random random = new Random();
         int input = random.nextInt(1, 4);
+        System.out.println("А вот и наступил ход твоего противника!");
         if (hero2.getArmorLevel() == 0 && input == 2) {
             input = 3;
         }
@@ -207,7 +208,7 @@ public class Battle {
         }
 
         public void printState(Hero hero, Hero hero2, double hp1, double hp2) {
-            System.out.println("hp = " + hero.getHpLevel() + "\t\t\t|\t\t\t" + hero2.getHpLevel());
+            System.out.println("hp = " + hero.getHpLevel() + "\t\t\t\t|\t\t\t\t" + hero2.getHpLevel());
             if (hp1 > hero.getHpLevel()) {
                 System.out.println("Здоровье первого героя уменьшилось на " + (hp1 - hero.getHpLevel()));
             }
@@ -215,9 +216,9 @@ public class Battle {
                 System.out.println("Здоровье второго героя уменьшилось на " + (hp2 - hero2.getHpLevel()));
             }
             System.out.println("armor = " + hero.getArmorLevel() + "\t\t\t|\t\t\t" + hero2.getArmorLevel());
-            System.out.println("stamina = " + hero.getStaminaLevel() + "\t\t\t|\t\t\t" + hero2.getStaminaLevel());
+            System.out.println("stamina = " + hero.getStaminaLevel() + "\t\t\t\t|\t\t\t\t" + hero2.getStaminaLevel());
             System.out.println("damage = " + hero.getDamage() + "\t\t\t|\t\t\t" + hero2.getDamage());
-            System.out.println("=====================================");
+            System.out.println("============================================");
             System.out.println();
         }
 
@@ -247,6 +248,31 @@ public class Battle {
         hero.setPassiveStamina(input);
         hero.passive();
     }
+
+    public String[][] dungeon(Hero hero) {
+
+        String[][] map = new String[50][50];
+        for(int i = 0; i < map.length; i++) {
+            map[i][0] = "|";
+            map[i][map.length - 1] = "|";
+        }
+        //top.append("\n-----------------------------");
+        for(int j = 0; j < map.length; j++) {
+            for (int k = 0; k < map[j].length; k++) {
+                if (j == 0 || j == map.length - 1) {
+                    map[j][k] = "-";
+                }
+                if (!hero.isCellVisible(new Position(k, j))) {
+                    map[j][k] = " ";
+                }
+                System.out.print(map[j][k]);
+            }
+            System.out.println();
+        }
+        return map;
+    }
+
+
 }
 
 

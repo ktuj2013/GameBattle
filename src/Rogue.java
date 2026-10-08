@@ -7,6 +7,11 @@ public class Rogue extends Hero {
         super(name, hp, stamina, armor, damage, isGamerPlay);
     }
 
+    @Override
+    public boolean isCellVisible(Position position) {
+        return false;
+    }
+
 
     @Override
     public void ability(Hero hero) {
@@ -19,4 +24,5 @@ public class Rogue extends Hero {
         setArmor(getArmorLevel() + 7 * getPassiveStamina());
         setStaminaLevel(getStaminaLevel() - getPassiveStamina());
     }
+
 }
